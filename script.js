@@ -59,22 +59,38 @@ function combinePronouns(indirect, direct) {
     return `${indVal} ${dirVal}`;
 }
 
-function checkCompatibility(verb, noun) {
-    if (!verb.tags || verb.tags.includes('any')) return true;
-    return verb.tags.includes(noun.tag);
+// Probabilistic Selection
+function pickVerbTier() {
+    const r = Math.random();
+    if (r < 0.80) return TIERS.UNIVERSAL;
+    if (r < 0.95) return TIERS.SEMI;
+    return TIERS.SPECIFIC;
 }
 
 function generateExercise() {
     let verb, noun, subject;
     
-    // Find compatible pair
-    let attempts = 0;
-    do {
-        verb = VERB_DATA[Math.floor(Math.random() * VERB_DATA.length)];
-        noun = NOUN_DATA[Math.floor(Math.random() * NOUN_DATA.length)];
-        attempts++;
-        // Fail-safe to prevent infinite loop
-    } while (!checkCompatibility(verb, noun) && attempts < 100);
+    // 1. Decide Tier
+    const tier = pickVerbTier();
+    const candidateVerbs = VERB_DATA.filter(v => v.tier === tier);
+    
+    // 2. Pick Verb
+    verb = candidateVerbs[Math.floor(Math.random() * candidateVerbs.length)];
+    
+    // 3. Pick Noun compatible with Verb
+    let candidateNouns;
+    if (tier === TIERS.SPECIFIC) {
+        // Must match tag
+        candidateNouns = NOUN_DATA.filter(n => n.tag === verb.reqTag);
+    } else {
+        // Universal/Semi: Accept ANY noun (as per requirements)
+        candidateNouns = NOUN_DATA;
+    }
+    
+    // Fallback if no specific nouns found (shouldn't happen with current data but good practice)
+    if (candidateNouns.length === 0) candidateNouns = NOUN_DATA;
+
+    noun = candidateNouns[Math.floor(Math.random() * candidateNouns.length)];
 
     const indirect = INDIRECT_PRONOUNS[Math.floor(Math.random() * INDIRECT_PRONOUNS.length)];
     subject = SUBJECTS[Math.floor(Math.random() * SUBJECTS.length)];
