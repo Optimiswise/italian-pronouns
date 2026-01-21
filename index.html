@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronominal: Italian Practice</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Italian Pronouns</h1>
+            <p>Combine the elements into the correct pronominal form</p>
+        </header>
+
+        <main>
+            <div class="card-container" id="puzzle-area">
+                <!-- Cards will be injected here by JS -->
+                <div class="card subject">Io</div>
+                <div class="card verb">offrire</div>
+                <div class="icon-arrow">➔</div>
+                <div class="card indirect">a voi</div>
+                <div class="card direct">una torta</div>
+            </div>
+
+            <div class="interaction-area">
+                <div class="instruction">
+                    Type the sentence omitting the noun:
+                </div>
+                
+                <input type="text" id="answer-input" placeholder="e.g. ve la offro" autocomplete="off">
+                
+                <div class="feedback hidden" id="feedback">
+                    <span id="feedback-icon">✓</span>
+                    <span id="feedback-text">Correct!</span>
+                </div>
+
+                <div class="controls">
+                    <button id="check-btn" class="btn primary">Check Answer</button>
+                    <button id="next-btn" class="btn secondary hidden">Next Exercise</button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="stats">
+                Score: <span id="score">0</span>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
